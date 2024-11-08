@@ -26,7 +26,7 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/federation_child/css/federation_child.css"
-# app_include_js = "/assets/federation_child/js/federation_child.js"
+app_include_js = "/assets/federation_child/js/document_change_re.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/federation_child/css/federation_child.css"
@@ -82,7 +82,7 @@ app_license = "mit"
 # Installation
 # ------------
 
-# before_install = "federation_child.install.before_install"
+before_install = "federation_child.setup.install.check_setup_wizard_not_completed"
 # after_install = "federation_child.install.after_install"
 
 # Uninstallation

@@ -1,0 +1,41 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-08 12:19:15.535336",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "master_doctypes"
+ ],
+ "fields": [
+  {
+   "fieldname": "master_doctypes",
+   "fieldtype": "Table",
+   "label": "Master Doctypes",
+   "options": "Master Doctypes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-11-08 12:19:15.535336",
+ "modified_by": "Administrator",
+ "module": "Federation Child",
+ "name": "Master List",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,61 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-30 19:39:46.174520",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "federated_site_name",
+  "column_break_qolc",
+  "api_key",
+  "api_secret_pass"
+ ],
+ "fields": [
+  {
+   "fieldname": "federated_site_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Federated URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "Api Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_qolc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "api_secret_pass",
+   "fieldtype": "Password",
+   "label": "Api Secret",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-11-05 12:09:22.294655",
+ "modified_by": "Administrator",
+ "module": "Federation Child",
+ "name": "Federated Erp Setting",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
