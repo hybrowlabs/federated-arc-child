@@ -1,5 +1,5 @@
 
-// Function to add a custom button
+// Function to add a custom Document Change Request Button and Disable Save Dynamically
 function addCustomButton(doctype) {
     frappe.ui.form.on(doctype, {
         refresh: function(frm) {
@@ -30,9 +30,6 @@ frappe.call({
     callback: function(r) {
         // List of target doctypes where the button should be added
         const doctypes = r.message;
-            
-
-
         // Iterate over each target doctype and apply the button logic
         doctypes.forEach(doctype => {
             addCustomButton(doctype);
