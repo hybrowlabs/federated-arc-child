@@ -23,7 +23,7 @@ def get_api_secret():
 #filter master List
 @frappe.whitelist()
 def get_master_list():
-    master=frappe.get_doc("Master List")
+    master=frappe.get_doc("Site Federation Config")
     master_list= [mas_doc.select_doctype for mas_doc in master.master_doctypes]
     return master_list
 
