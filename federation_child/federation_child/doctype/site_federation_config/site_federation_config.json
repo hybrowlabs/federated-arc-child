@@ -18,10 +18,10 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-08 12:19:15.535336",
+ "modified": "2024-11-19 17:01:17.581365",
  "modified_by": "Administrator",
  "module": "Federation Child",
- "name": "Master List",
+ "name": "Site Federation Config",
  "owner": "Administrator",
  "permissions": [
   {

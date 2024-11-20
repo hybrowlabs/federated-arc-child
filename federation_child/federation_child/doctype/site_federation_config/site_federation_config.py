@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class MasterList(Document):
+class SiteFederationConfig(Document):
 	pass

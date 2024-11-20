@@ -1,10 +1,19 @@
 import json
 import frappe
+from frappe.auth import LoginManager
 
 #Generate Api Key And Secret
-@frappe.whitelist(allow_guest=True)
-def get_api_secret():
-    user = frappe.get_doc('User', "Administrator")
+@frappe.whitelist()
+def get_api_secret(user_id=None):
+    if not user_id:
+        user = frappe.get_doc('User', "Administrator")
+    else:
+        user=frappe.db.get_value("User",user_id,"name")
+        if user:
+            user = frappe.get_doc('User', user_id)
+        else:
+            frappe.throw(f'User {user_id} Not Found')
+
     api_secret = user.get_password('api_secret') if user.api_secret else None
     if not user.api_key:
         api_key = frappe.generate_hash(length=15)
@@ -16,11 +25,28 @@ def get_api_secret():
         user.save(ignore_permissions=True)
     return str(user.api_key),str(api_secret)
 
+#Get sid
+@frappe.whitelist(methods=["GET"])
+def get_cookies():
+    user_id = frappe.session.user
+    login_manager = LoginManager()
+    login_manager.login_as(user_id)
+    return {
+        "user_id":user_id,
+        "success": True
+    }
+
+#login With Sid
+@frappe.whitelist(allow_guest=True)
+def login_with_sid(sid,domain):
+    frappe.session.sid=sid
+    frappe.local.response["type"] = "redirect"
+    frappe.local.response["location"] = str(domain)+"/app"
 
 #filter master List
 @frappe.whitelist()
 def get_master_list():
-    master=frappe.get_doc("Master List")
+    master=frappe.get_doc("Site Federation Config")
     master_list= [mas_doc.select_doctype for mas_doc in master.master_doctypes]
     return master_list
 
@@ -76,3 +102,21 @@ def approve_change_request(name,status):
         new_doc=frappe.get_doc(doc.ref_doctype,doc.docname)
         new_doc.update(doc.new_data)
         new_doc.save(ignore_permissions=True)
+
+
+
+@frappe.whitelist()
+def create_social_login(client_id,client_secret,base_url):
+    doc=frappe.new_doc("Social Login Key")
+    doc.enable_social_login=1
+    doc.social_login_provider="Frappe"
+    doc.provider_name="Frappe"
+    doc.client_id=client_id
+    doc.client_secret=client_secret
+    doc.base_url=base_url
+    doc.authorize_url="/api/method/frappe.integrations.oauth2.authorize"
+    doc.access_token_url="/api/method/frappe.integrations.oauth2.get_token"
+    doc.redirect_url="/api/method/frappe.integrations.oauth2_logins.login_via_frappe"
+    doc.api_endpoint="/api/method/frappe.integrations.oauth2.openid_profile"
+    doc.auth_url_data='{"response_type": "code", "scope": "openid"}'
+    doc.save(ignore_permissions=True)
