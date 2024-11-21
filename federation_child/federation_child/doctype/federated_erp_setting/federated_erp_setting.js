@@ -3,16 +3,14 @@
 
 frappe.ui.form.on("Federated Erp Setting", {
 	refresh(frm) {
-        // if(!frm.doc.__islocal){
-        //     frm.add_custom_button(__('Generate Api Secret'), function() {
-        //         frappe.call({
-        //             method:"get_api_key_secret",
-        //             doc:frm.doc,
-        //             callback:function(r){
+        frm.add_custom_button(__('Create Site to Federated'), function() {
+            frappe.call({
+                method:"create_site_on_fedrated",
+                doc:frm.doc,
+                callback:function(r){
 
-        //             }
-        //         })
-        //     })
-        // }
+                }
+            })
+        })
 	},
 });

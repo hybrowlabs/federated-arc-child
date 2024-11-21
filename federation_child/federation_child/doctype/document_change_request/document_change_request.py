@@ -4,6 +4,7 @@
 import json
 
 import frappe
+from frappe.database.database import getdate
 from frappe.model import no_value_fields, table_fields
 from frappe.model.document import Document
 import requests
@@ -30,14 +31,15 @@ class DocumentChangeRequest(Document):
 	def creation_change_request(self):
 		if self.get("__islocal"):
 			doc=frappe.get_doc("Federated Erp Setting")
-			url=f"{doc.federated_site_name}/api/resource/Document%20Change%20Request"
+			url=f"{doc.federated_site_name}/api/method/fedration_erp.fedration_erp.api.create_document_change_request"
 			api_secret =doc.get_password(fieldname="api_secret_pass", raise_exception=False)
 			payload=json.dumps({
+				"name":self.name,
 				"ref_doctype":self.ref_doctype,
 				"status":self.status,
 				"docname":self.docname,
-				"data":self.data,
-				"new_data":self.new_data,
+				"data":str(self.data),
+				"new_data":str(self.new_data),
 				"erpnext_site":get_site_url(get_site_name(frappe.local.request.host))
 			},default=str)
 			headers = {
@@ -71,6 +73,8 @@ class DocumentChangeRequest(Document):
 	def set_diff(self, old: Document, new: Document) -> bool:
 		"""Set the data property with the diff of the docs if present"""
 		diff = get_diff(old, frappe._dict(new))
+		print("$$$$$$$$$$$$$$$$$$$$$$",diff)
+
 		if diff:
 			self.set_impersonator(diff)
 			self.ref_doctype = new.doctype
@@ -175,7 +179,12 @@ def get_diff(old, new, for_child=False, compare_cancelled=False):
 				new_value = new.get(df.fieldname) if new_value else new_value
 
 			if old_value != new_value:
-				out.changed.append((df.fieldname, old_value, new_value))
+				if df.fieldtype=="Date":
+					if getdate(old_value)!=getdate(new_value):
+						out.changed.append((df.fieldname, old_value, new_value))
+				else:
+					out.changed.append((df.fieldname, old_value, new_value))
+
 
 	# name & docstatus
 	if not for_child:

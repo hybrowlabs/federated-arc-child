@@ -26,7 +26,7 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/federation_child/css/federation_child.css"
-app_include_js = ["/assets/federation_child/js/document_change_re.js"]
+app_include_js = ["/assets/federation_child/js/document_change_re.js","assets/federation_child/js/setup_wizard_override.js"]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/federation_child/css/federation_child.css"
@@ -81,6 +81,8 @@ app_include_js = ["/assets/federation_child/js/document_change_re.js"]
 
 # Installation
 # ------------
+setup_wizard_requires = "assets/federation_child/js/setup_wizard_override.js"
+
 
 before_install = "federation_child.setup.install.check_setup_wizard_not_completed"
 # after_install = "federation_child.install.after_install"
@@ -129,9 +131,9 @@ before_install = "federation_child.setup.install.check_setup_wizard_not_complete
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Company": "federation_child.override.company.CustomCompany"
+}
 
 # Document Events
 # ---------------

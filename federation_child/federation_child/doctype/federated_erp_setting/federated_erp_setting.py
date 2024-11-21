@@ -4,28 +4,30 @@
 import json
 from federation_child.api import get_api_secret
 import frappe
-from frappe.client import get_password
 from frappe.model.document import Document
 import requests
 
 from frappe.utils import cstr, get_site_name, get_site_url
-from frappe.utils.password import get_decrypted_password
 
 
 class FederatedErpSetting(Document):
 	def before_save(self):
-		if self.federated_site_name and self.get("__islocal"):
+		if self.federated_site_name and self.site_created==0:
 			self.create_site_on_fedrated()
+
 
 	@frappe.whitelist()
 	def create_site_on_fedrated(self):
+		"""
+			Create Site On Fedrated
+		"""
 		api=get_api_secret()
 		url=f'{self.federated_site_name}/api/method/fedration_erp.fedration_erp.api.create_site'
 		payload=json.dumps({
-                "site_name" : get_site_url(get_site_name(frappe.local.request.host)),
-                "api_key":api[0],
-                "api_secret":api[1]
-            })
+				"site_name" : get_site_url(get_site_name(frappe.local.request.host)),
+				"api_key":api[0],
+				"api_secret":api[1]
+			})
 		api_secret =self.get_password(fieldname="api_secret_pass", raise_exception=False)
 		headers = {
 			'Content-Type': 'application/json',
@@ -36,6 +38,5 @@ class FederatedErpSetting(Document):
 			frappe.log_error(title = 'Site creation error',message=response.text)
 			frappe.msgprint("Failed To Create Site")
 		else:
+			frappe.db.set_single_value("Federated Erp Setting", "site_created", 1)
 			frappe.msgprint("Site Created Sucessfully")
-
-
