@@ -181,22 +181,27 @@ def document_change_request(self):
 
 
 @frappe.whitelist()
-def approve_change_request(name,status):
+def approve_change_request(name,status,data,ref_doctype,docname):
     """
     Approve Document change Request Creation Api
     """
-    doc=frappe.get_doc("Document Change Request",name)
-    doc.status=status
+    doc=None
+    document_change_request=frappe.db.get_value("Document Change Request",name,"name")
+    if document_change_request:
+        doc=frappe.get_doc("Document Change Request",name)
+        print('################',doc.name,status)
+        doc.status=status
     if status=="Approved":
-        new_doc=frappe.get_doc(doc.ref_doctype,doc.docname)
-        for key, value in eval(doc.new_data).items():
-            if key not in ["doctype", "name","company","modified","creation"]:  # Skip non-field keys
+        new_doc=frappe.get_doc(ref_doctype,docname)
+        for key, value in eval(data).items():
+            if key not in ["doctype", "name","modified","creation"]:  # Skip non-field keys
                 new_doc.set(key, value)
-        
         new_doc.save()
         frappe.db.commit()
-        
-    doc.save(ignore_permissions=True)
+    if document_change_request:
+        print("###################",document_change_request)
+        doc.save(ignore_permissions=True)
+        frappe.db.commit()
 
 
 

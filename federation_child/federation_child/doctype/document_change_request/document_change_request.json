@@ -56,7 +56,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Pending\nRejected\nApproved",
+   "options": "Pending\nRejected\nApproved\nConflict",
    "read_only": 1
   },
   {
@@ -69,7 +69,7 @@
  "icon": "fa fa-copy",
  "in_create": 1,
  "links": [],
- "modified": "2024-11-08 10:25:19.110723",
+ "modified": "2024-11-24 23:46:54.333383",
  "modified_by": "Administrator",
  "module": "Federation Child",
  "name": "Document Change Request",
